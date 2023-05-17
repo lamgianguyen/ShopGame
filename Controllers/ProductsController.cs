@@ -35,7 +35,7 @@ namespace DUCtrongAPI.Controllers
         public async Task<ActionResult> PostProduct(ProductReq productReq)
         {
             //create productreq from input
-           
+
             try
             {
                 var productrespon = await _productService.Add(productReq);
@@ -92,8 +92,37 @@ namespace DUCtrongAPI.Controllers
 
         }
 
-        //return CreatedAtAction("GetProduct", new { id = product.ProductId }, product);
+        [HttpGet("id")]
+        public async Task<IActionResult> GetProductbyId(string id)
+    {
+        try
+        {
+            var cart = await _productService.GetProductbyId(id);
+            if (cart == null) return BadRequest();
+            //return post 201 result
+            return StatusCode(200, cart);
+        }
+        catch (ArgumentNullException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (DbUpdateException)
+        {
+            return StatusCode(500, "Internal server exception");
+        }
+        catch (SqlException)
+        {
+            return StatusCode(500, "Internal server exception");
+        }
+
     }
+
+
+}
 
 }  
 

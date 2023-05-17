@@ -8,7 +8,7 @@ namespace DUCtrongAPI.Repositories.EmplementedRepository.UserRepos
     public interface IUserRepo : IRepository<User>
     {
        
-        public Task<User> Login(int phonenumber, string password);
+        public Task<User> Login(string phonenumber, string password);
         public Task<PagedResult<UserViewPaging>> GetUserPaging(UserPaging userPaging);
     }
 }

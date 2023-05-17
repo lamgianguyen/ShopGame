@@ -45,7 +45,7 @@ namespace DUCtrongAPI.Repositories.EmplementedRepository.UserRepos
 
         }
 
-        public async Task<User> Login(int phonenumber, string password)
+        public async Task<User> Login(string phonenumber, string password)
         {
 
             var query = from user in context.Users

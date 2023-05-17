@@ -25,6 +25,7 @@ namespace DUCtrongAPI.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> RegisterUser([FromBody] UserRegis userRegis)
         {
             try

@@ -15,7 +15,7 @@ namespace DUCtrongAPI.Models
         public string Password { get; set; } = null!;
         public int RoleId { get; set; }
         public string? UserName { get; set; }
-        public int? PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = null!;
         public string? Address { get; set; }
 
         public virtual Role Role { get; set; } = null!;

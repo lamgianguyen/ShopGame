@@ -9,5 +9,6 @@ namespace DUCtrongAPI.Services.ProductServices
     {
         Task<bool> Add(ProductReq productreq);
         Task<PagedResult<ProductViewPaging>> GetProductPaging(ProductPaging productPaging);
+        Task<ProductViewPaging> GetProductbyId(string id);
     }
 }

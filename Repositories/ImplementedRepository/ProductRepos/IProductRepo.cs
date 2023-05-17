@@ -9,5 +9,6 @@ namespace DUCtrongAPI.Repositories.EmplementedRepository.ProductRepos
     public interface IProductRepo : IRepository<Product>
     {
         Task<PagedResult<ProductViewPaging>> GetallProductPaging(ProductPaging productPaging);
+        Task<ProductViewPaging> GetProduct(string id);
     }
 }

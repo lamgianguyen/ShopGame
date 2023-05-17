@@ -5,7 +5,7 @@
         //extend user models
         public string UserId { get; set; }
         public string UserName { get; set; }
-        public int? PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public int RoleId { get; set; }
         

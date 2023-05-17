@@ -52,7 +52,23 @@ namespace DUCtrongAPI.Repositories.EmplementedRepository.ProductRepos
             return pageResult;
         }
         //create insert product from product input
-
+        public async Task<ProductViewPaging> GetProduct(string id)
+        {
+            var query = from p in context.Products
+                        where p.ProductId == id
+                        join pt in context.ProductTypes on p.ProductTypeId equals pt.ProductTypeId
+                        select new ProductViewPaging()
+                        {
+                          ProductId=  p.ProductId,
+                          ProductName=  p.ProductName,
+                          ProductDetail =  p.ProductDetail,
+                          Price = p.Price,
+                            ProductTypeName = pt.ProductTypeName,
+                           Img=   p.Img
+                        };
+            ProductViewPaging result = await query.FirstOrDefaultAsync();
+            return result;
+        }
 
     }
 }

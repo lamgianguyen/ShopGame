@@ -37,6 +37,12 @@ namespace DUCtrongAPI.Services.ProductServices
             }
         }
 
+        public async Task<ProductViewPaging> GetProductbyId(string id)
+        {
+            ProductViewPaging product =await _productRepo.GetProduct(id);
+            return product;
+        }
+
         public Task<PagedResult<ProductViewPaging>> GetProductPaging(ProductPaging productPaging)
         {
             var listProduct = _productRepo.GetallProductPaging(productPaging);
