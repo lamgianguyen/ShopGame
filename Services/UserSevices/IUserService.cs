@@ -10,5 +10,6 @@ namespace DUCtrongAPI.Services.UserSevices
         Task<string> Login(UserLogin userlogin);
         Task<User> Register(UserRegis user);
         Task<PagedResult<UserViewPaging>> GetUserPaging(UserPaging userPaging);
+        Task<UserViewPaging> GetUserById(string id);
     }
 }

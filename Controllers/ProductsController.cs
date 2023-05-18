@@ -92,7 +92,7 @@ namespace DUCtrongAPI.Controllers
 
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetProductbyId(string id)
     {
         try

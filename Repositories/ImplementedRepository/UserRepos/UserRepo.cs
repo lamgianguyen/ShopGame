@@ -15,14 +15,32 @@ namespace DUCtrongAPI.Repositories.EmplementedRepository.UserRepos
         {
             
         }
+        public async Task<UserViewPaging> GetUserById(string id)
+        {
+            var query = from u in context.Users
+                        where u.UserId.Equals(id)
+                        join role in context.Roles on u.RoleId equals role.RoleId
+                        select new UserViewPaging()
+                        {
+                            UserId = u.UserId,
+                            UserName = u.UserName,
+                            Address = u.Address,
+                            PhoneNumber = u.PhoneNumber,
+                            roleName = role.RoleName
+                        };
+            UserViewPaging user = await query.SingleOrDefaultAsync();
+            return user;
+        }
 
         public async Task<PagedResult<UserViewPaging>> GetUserPaging(UserPaging userPaging)
         {
             var query = from user in context.Users
-                        select user;
+                        join role in context.Roles on user.RoleId equals role.RoleId
+                        select new { User2 = user, Role2 = role };
+
             if (!string.IsNullOrEmpty(userPaging.NameOrPhone))
             {
-                query = query.Where(x => x.UserName.Contains(userPaging.NameOrPhone) || x.PhoneNumber.Equals(userPaging.NameOrPhone));
+               query = query.Where(x => x.User2.UserName.Contains(userPaging.NameOrPhone) || x.User2.PhoneNumber.Equals(userPaging.NameOrPhone));
             }
 
             var totalRow = await query.CountAsync();
@@ -32,11 +50,11 @@ namespace DUCtrongAPI.Repositories.EmplementedRepository.UserRepos
                 .Take(userPaging.pageItems)
                 .Select(selector => new UserViewPaging()
                 {
-                    UserId = selector.UserId,
-                    UserName = selector.UserName,
-                    PhoneNumber = selector.PhoneNumber,
-                    Address = selector.Address,
-                    RoleId = selector.RoleId,
+                    UserId = selector.User2.UserId,
+                    UserName = selector.User2.UserName,
+                    PhoneNumber = selector.User2.PhoneNumber,
+                    Address = selector.User2.Address,
+                    roleName = selector.Role2.RoleName,
                 }).ToListAsync();
 
             var pageResult = new PagedResult<UserViewPaging>(list,  totalRow, userPaging.pageIndex, userPaging.pageItems);

@@ -10,5 +10,6 @@ namespace DUCtrongAPI.Repositories.EmplementedRepository.UserRepos
        
         public Task<User> Login(string phonenumber, string password);
         public Task<PagedResult<UserViewPaging>> GetUserPaging(UserPaging userPaging);
+        public Task<UserViewPaging> GetUserById(string id);
     }
 }

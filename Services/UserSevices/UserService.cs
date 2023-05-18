@@ -109,5 +109,12 @@ namespace DUCtrongAPI.Services.UserSevices
             var listUser =  _userRepo.GetUserPaging(userPaging);
             return listUser;
         }
+
+        public async Task<UserViewPaging> GetUserById(string id)
+        {
+
+            var userviewpaging = await _userRepo.GetUserById(id);
+            return userviewpaging;
+        }
     }
 }

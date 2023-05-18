@@ -54,36 +54,7 @@ namespace DUCtrongAPI.Controllers
                 return StatusCode(500, "Internal server exception");
             }
         }
-        //post logout
-        [HttpPost("logout")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Logout()
-        {
-            try
-            {
-                await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
-
-                return StatusCode(201,"Logged out successfully");
-                
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (DbUpdateException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (SqlException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
+      
         //post login
         [HttpPost("login")]
         [AllowAnonymous]
@@ -142,6 +113,36 @@ namespace DUCtrongAPI.Controllers
             }
 
         }
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetUserById(string id)
+        {
+            try
+            {
+                var cart = await _userService.GetUserById(id);
+                if (cart == null) return BadRequest();
+                //return post 201 result
+                return StatusCode(200, cart);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(500, "Internal server exception");
+            }
+            catch (SqlException)
+            {
+                return StatusCode(500, "Internal server exception");
+            }
+
+        }
+        
     }
 
 }
