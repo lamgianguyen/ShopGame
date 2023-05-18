@@ -21,7 +21,7 @@ namespace DUCtrongAPI.Services.CartServices
            
            
 
-            var check =  await _cartRepo.GetCart(cartreq.userid, cartreq.productid);
+            var check =  await _cartRepo.GetCartItem(cartreq.userid, cartreq.productid);
             if (check !=null)
             {
                 check.Quantity = cartreq.quantity;
@@ -47,7 +47,7 @@ namespace DUCtrongAPI.Services.CartServices
             return deletecart;
         }
 
-        public Task<PagedResult<Cart>> GetCartPaging(CartPaging cartpaging)
+        public Task<PagedResult<CartView>> GetCartPaging(CartPaging cartpaging)
         {
             var listcart = _cartRepo.GetallCartPaging(cartpaging);
             return listcart;

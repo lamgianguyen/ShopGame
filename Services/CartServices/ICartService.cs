@@ -10,6 +10,6 @@ namespace DUCtrongAPI.Services.CartServices
         Task<bool> AddtoCart(CartReq cartreq);
         Task<bool> UpdateCart(UpdateCartModel updateCartModel);
         Task<bool> DeleteCart(string userid, string productid);
-        Task<PagedResult<Cart>> GetCartPaging(CartPaging cartpaging);
+        Task<PagedResult<CartView>> GetCartPaging(CartPaging cartpaging);
     }
 }

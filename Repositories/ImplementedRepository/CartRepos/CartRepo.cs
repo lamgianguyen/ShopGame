@@ -14,7 +14,7 @@ namespace DUCtrongAPI.Repositories.EmplementedRepository.CartRepos
             
         }
 
-            public async Task<Cart> GetCart(string userid, string productid)
+            public async Task<Cart> GetCartItem(string userid, string productid)
             {
                 var query = from cart in context.Carts
                             where cart.UserId == userid && cart.ProductId == productid
@@ -50,25 +50,31 @@ namespace DUCtrongAPI.Repositories.EmplementedRepository.CartRepos
     return false;
 }
 
-        public async Task<PagedResult<Cart>> GetallCartPaging(CartPaging cartpaging)
+        public async Task<PagedResult<CartView>> GetallCartPaging(CartPaging cartpaging)
         {
             var query = from cart in context.Carts
-                        where cart.UserId == cartpaging.userid
-                        select cart;
+                        where cart.UserId == cartpaging.userid 
+                        join p in context.Products on cart.ProductId equals p.ProductId
+                        select new { cart,p };
+                       
             int totalRow = await query.CountAsync();
 
             var list = await query
                 .Skip((cartpaging.pageIndex - 1) * cartpaging.pageItems)
                 .Take(cartpaging.pageItems)
-                .Select(selector => new Cart()
-            {
-                CartId=selector.CartId,
-                UserId = selector.UserId,
-                ProductId = selector.ProductId,
-                Quantity = selector.Quantity,
-            }).ToListAsync();
+                .Select(selector => new CartView()
+                {
+                    ProductId = selector.cart.ProductId,
+                    ProductName = selector.p.ProductName,
+                    ProductImage = selector.p.Img,
+                    Quantity = selector.cart.Quantity,
+                    UserId = selector.cart.UserId,
+                    CartId = selector.cart.CartId,
+                    price = selector.p.Price
+                }).OrderBy(cartView => cartView.ProductName) // Order by ProductName
+    .ToListAsync();
 
-            var pageResult = new PagedResult<Cart>(list, totalRow, cartpaging.pageIndex, cartpaging.pageItems);
+            var pageResult = new PagedResult<CartView>(list, totalRow, cartpaging.pageIndex, cartpaging.pageItems);
 
             return pageResult;
         }
@@ -80,7 +86,7 @@ namespace DUCtrongAPI.Repositories.EmplementedRepository.CartRepos
                 return await RemoveCart(updateCartModel.UserId, updateCartModel.ProductId);
                 
             }
-            var check = await GetCart(updateCartModel.UserId, updateCartModel.ProductId);
+            var check = await GetCartItem(updateCartModel.UserId, updateCartModel.ProductId);
 
             if (check != null)
             {

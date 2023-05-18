@@ -8,8 +8,8 @@ namespace DUCtrongAPI.Repositories.EmplementedRepository.CartRepos
     public interface ICartRepo : IRepository<Cart>
     {
         Task<bool> CheckCart(string userid, string productid);
-        Task<Cart> GetCart(string userid, string productid);
-        Task<PagedResult<Cart>> GetallCartPaging(CartPaging cartpaging);
+        Task<Cart> GetCartItem(string userid, string productid);
+        Task<PagedResult<CartView>> GetallCartPaging(CartPaging cartpaging);
         Task<bool> UpdateCart(UpdateCartModel updateCartModel);
         Task<bool> RemoveCart(string userid, string productid);
     }
