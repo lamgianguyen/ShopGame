@@ -32,13 +32,13 @@ namespace DUCtrongAPI.Controllers
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult> PostProduct(ProductReq productReq)
+        public async Task<IActionResult> PostProduct(IFormFile file,[FromForm]ProductReq productReq)
         {
             //create productreq from input
 
             try
             {
-                var productrespon = await _productService.Add(productReq);
+                var productrespon = await _productService.Add(productReq,file);
                 if (productrespon == null)
                 {
                     return BadRequest();

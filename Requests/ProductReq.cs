@@ -8,7 +8,7 @@
             public string? ProductDetail { get; set; }
             public double? Price { get; set; }
             public int ProductTypeId { get; set; }
-            public string? Img { get; set; }
+           
 
         }
     }

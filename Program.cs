@@ -45,15 +45,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopGame.API", Version = "v1", Description = "APIs for ShopGame" });
-c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-{
-    Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
-    In = ParameterLocation.Header,
-    Name = "Authorization",
-    Type = SecuritySchemeType.ApiKey
-});
-
-c.OperationFilter<SecurityRequirementsOperationFilter>();
+    c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    
+    c.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: false);

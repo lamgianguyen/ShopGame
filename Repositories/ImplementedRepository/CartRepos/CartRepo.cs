@@ -91,6 +91,7 @@ namespace DUCtrongAPI.Repositories.EmplementedRepository.CartRepos
             if (check != null)
             {
                 check.Quantity = updateCartModel.Quantity;
+                await context.SaveChangesAsync();
                 return true;
             }
 
