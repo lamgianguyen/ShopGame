@@ -1,6 +1,8 @@
 ﻿using DUCtrongAPI.Models;
+using DUCtrongAPI.Repositories.EmplementedRepository.Paging;
 using DUCtrongAPI.Repositories.ImplementedRepository.OrderDetailRepos;
 using DUCtrongAPI.Repositories.ImplementedRepository.OrderRepos;
+using DUCtrongAPI.Requests;
 
 namespace DUCtrongAPI.Services.OrderServices
 {
@@ -14,10 +16,10 @@ namespace DUCtrongAPI.Services.OrderServices
             _orderDetailRepo = orderDetailRepo;
         }
 
-        public Task<List<OrderDetail>> ConfrimOrder(string orderid)
+        public Task<bool> ConfrimOrder(string orderid,bool check)
         {
             // new list from orderrepo confirm order
-            var list = _orderRepo.CorfirmOrder(orderid);
+            var list = _orderRepo.CorfirmOrder(orderid,check);
             return list;
         }
 
@@ -25,6 +27,14 @@ namespace DUCtrongAPI.Services.OrderServices
         {
             var order = _orderRepo.CreateOrder(userid);
             return order != null ? Task.FromResult(true) : Task.FromResult(false);
+        }
+
+        public async Task<PagedResult<OrderViewPaging>> GetAllOrder(PagingRequestBase pagingRequestBase)
+        {
+            var result = await _orderRepo.GetOrderPaging(pagingRequestBase);
+            return result;
+
+            
         }
     }
 }
