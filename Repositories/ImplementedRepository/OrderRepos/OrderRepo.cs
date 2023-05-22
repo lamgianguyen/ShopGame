@@ -101,30 +101,43 @@ namespace DUCtrongAPI.Repositories.ImplementedRepository.OrderRepos
 
         public async Task<OrderViewDetail> GetOrderId(string id)
         {
-            var query = from o in context.Orders
-                        where o.OrderId == id
-                        select o;
+            var orderQuery = from o in context.Orders
+                             where o.OrderId == id
+                             select o;
 
-           var result = await query.FirstOrDefaultAsync();
-            var query2 = from od in context.OrderDetails
-                         where od.OrderId == id
-                         select new OrderDetailView()
-                         {
-                             OrderDetaiId = od.OrderDetaiId,
-                             OrderId = od.OrderId,
-                             ProductId = od.ProductId,
-                             Quantity = od.Quantity
-                         };
-            var list2 = await query2.ToListAsync();
-            var order = new OrderViewDetail()
+            var order = await orderQuery.FirstOrDefaultAsync();
+
+            if (order == null)
             {
+                return null; // Handle the case when the order is not found
+            }
 
-                OrderId = result.OrderId,
-                UserId = result.UserId,
-                Status = result.Status,
-                list = list2
+            var query = from od in context.OrderDetails
+                        where od.OrderId == id
+                        join p in context.Products on od.ProductId equals p.ProductId
+                        join pt in context.ProductTypes on p.ProductTypeId equals pt.ProductTypeId
+                        select new OrderDetailView
+                        {
+                            OrderDetaiId = od.OrderDetaiId,
+                            OrderId = od.OrderId,
+                            ProductId = od.ProductId,
+                            ProductName = p.ProductName,
+                            price = p.Price,
+                            productTypeName = pt.ProductTypeName,
+                            Quantity = od.Quantity
+                        };
+
+            var orderDetails = await query.ToListAsync();
+
+            var orderViewDetail = new OrderViewDetail
+            {
+                OrderId = order.OrderId,
+                UserId = order.UserId,
+                Status = order.Status,
+                list = orderDetails
             };
-            return order;
+
+            return orderViewDetail;
         }
 
         public async Task<PagedResult<OrderViewPaging>> GetOrderPaging(PagingRequestBase pagingRequestBase)
