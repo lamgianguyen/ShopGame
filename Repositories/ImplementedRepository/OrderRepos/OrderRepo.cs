@@ -129,7 +129,21 @@ namespace DUCtrongAPI.Repositories.ImplementedRepository.OrderRepos
 
         public async Task<PagedResult<OrderViewPaging>> GetOrderPaging(PagingRequestBase pagingRequestBase)
         {
-            var list = await context.Orders
+            var query = from o in context.Orders
+                        join u in context.Users on o.UserId equals u.UserId
+                        select new OrderViewPaging()
+                        {
+                            orderid = o.OrderId,
+                            userid = o.UserId,
+                            status = o.Status,
+                            username=u.UserName,
+                            address= u.Address,
+                            phonenumber = u.PhoneNumber
+                        };
+            var list2 = await query.
+                Skip((pagingRequestBase.pageIndex - 1) * pagingRequestBase.pageItems)
+               .Take(pagingRequestBase.pageItems).ToListAsync();
+            /*var list = await context.Orders
                .Skip((pagingRequestBase.pageIndex - 1) * pagingRequestBase.pageItems)
                .Take(pagingRequestBase.pageItems)
                .Select(selector => new OrderViewPaging()
@@ -138,11 +152,11 @@ namespace DUCtrongAPI.Repositories.ImplementedRepository.OrderRepos
                    orderid = selector.OrderId,
                    userid = selector.UserId,
                    status = selector.Status,
-               }).ToListAsync(); ;
-            var totalRow = list.Count();
+               }).ToListAsync(); */
+            var totalRow = list2.Count();
             
 
-            var pageResult = new PagedResult<OrderViewPaging>(list, totalRow, pagingRequestBase.pageIndex, pagingRequestBase.pageItems);
+            var pageResult = new PagedResult<OrderViewPaging>(list2, totalRow, pagingRequestBase.pageIndex, pagingRequestBase.pageItems);
 
             return pageResult;
         }
