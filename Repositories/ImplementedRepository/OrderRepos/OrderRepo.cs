@@ -153,7 +153,7 @@ namespace DUCtrongAPI.Repositories.ImplementedRepository.OrderRepos
                    userid = selector.UserId,
                    status = selector.Status,
                }).ToListAsync(); */
-            var totalRow = list2.Count();
+            var totalRow = await query.CountAsync();
             
 
             var pageResult = new PagedResult<OrderViewPaging>(list2, totalRow, pagingRequestBase.pageIndex, pagingRequestBase.pageItems);
