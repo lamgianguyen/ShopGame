@@ -91,12 +91,15 @@ namespace DUCtrongAPI.Services.UserSevices
 
         public async Task<User> Register(UserRegis userRegis)
         {
-            User user =new User();
-            user.UserId = Guid.NewGuid().ToString();
-            user.PhoneNumber = userRegis.PhoneNumber;
-            user.Password = userRegis.Password;
-            user.UserName = userRegis.UserName;
-            user.RoleId = 2;
+            User user =new User()
+            {
+                UserId = Guid.NewGuid().ToString(),
+                PhoneNumber = userRegis.PhoneNumber,
+                Password = userRegis.Password,
+                UserName = userRegis.UserName,
+                Address = userRegis.Address,
+                RoleId = 2
+            };
            var check =   await _userRepo.Insert(user);
             if (check != true)
                 return null;
